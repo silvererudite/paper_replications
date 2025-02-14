@@ -47,11 +47,13 @@ def bpe(words, num_merges=10):
 
     for _ in range(num_merges):
         pairs = get_pair_freq(vocab)
+        #print("pairs", pairs)
         if not pairs:
             break
         best_pair = max(pairs, key=pairs.get)
         vocab = merge_pair(best_pair, vocab)
         merges.append(best_pair)
+        merge_steps.append(len(vocab))
     plot_bpe_progress(merge_steps)
     return vocab, merges
 
@@ -63,6 +65,10 @@ def bpe(words, num_merges=10):
 # best_pair = max(pairs, key=pairs.get)  # Get most frequent pair
 # modified_vocab = merge_pair(best_pair, orig_vocab)
 # print("modified vocab", modified_vocab)
-bpe_vocab, merge_operations = bpe(["low", "lower", "newest", "widest"], num_merges=10)
-print("Final BPE Vocabulary:", bpe_vocab)
-print("Merge Operations:", merge_operations)
+file_path = "../alice.txt"  # Change this to the path of your file
+with open(file_path, "r", encoding="utf-8") as file:
+    text = file.read()
+#print("text length", len(text))
+bpe_vocab, merge_operations = bpe(text, num_merges=20)
+#print("Final BPE Vocabulary:", bpe_vocab)
+#print("Merge Operations:", merge_operations)
