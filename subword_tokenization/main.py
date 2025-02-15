@@ -68,7 +68,8 @@ def bpe(words, num_merges=10):
 file_path = "../alice.txt"  # Change this to the path of your file
 with open(file_path, "r", encoding="utf-8") as file:
     text = file.read()
-#print("text length", len(text))
+print("text length", len(text))
 bpe_vocab, merge_operations = bpe(text, num_merges=20)
 #print("Final BPE Vocabulary:", bpe_vocab)
 #print("Merge Operations:", merge_operations)
+print(len(bpe_vocab))
