@@ -37,9 +37,12 @@ def evaluate_compression(test_words: List[str], merges: List[Tuple[str, str]]) -
     orig_chars = sum(len(word) for word in test_words)
     orig_tokens = sum(len(word.split()) for word in
                       [' '.join(list(word)) + ' </w>' for word in test_words])
+    print("merges", merges)
+    print("original tokens", orig_tokens)
 
     # Apply BPE merges
     compressed_words = [apply_bpe(word, merges) for word in test_words]
+    print("compressed words", compressed_words)
     compressed_tokens = sum(len(word.split()) for word in compressed_words)
 
     return {
@@ -125,7 +128,7 @@ def learn_and_evaluate_bpe(text: str, num_merges: int = 100) -> None:
     plt.title("BPE Compression Progress on Test Data")
     plt.grid(True)
     plt.show()
-def learn_bpe(words: List[str], num_merges: int = 10) -> Tuple[Dict[str, int], List[Tuple[str, str]]]:
+def learn_bpe(words: List[str], num_merges: int = 3) -> Tuple[Dict[str, int], List[Tuple[str, str]]]:
     """Learn BPE merges from text."""
     vocab = init_vocab(words)
     print("Initial vocab size", len(vocab))
@@ -159,17 +162,18 @@ def apply_bpe(word: str, merges: List[Tuple[str, str]]) -> str:
     word = ' '.join(list(word)) + ' </w>'
     for pair in merges:
         word = re.sub(re.escape(' '.join(pair)), ''.join(pair), word)
+        print("word", word)
     return word
 
 
 # Example usage
 if __name__ == "__main__":
-    with open("../alice.txt", "r", encoding="utf-8") as f:
+    with open("../test.txt", "r", encoding="utf-8") as f:
         text = f.read()
 
     # words = preprocess_text(text)
     # vocab, merges = learn_bpe(words, num_merges=100)
-    learn_and_evaluate_bpe(text, num_merges=200)
+    learn_and_evaluate_bpe(text, num_merges=20)
 
     # print("\nFinal vocabulary size:", len(vocab))
     # print("\nSample of final vocabulary:")
